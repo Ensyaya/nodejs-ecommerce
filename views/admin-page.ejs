@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <%- include("partials/navbar") %>
+    <div class="container">
+      <h1>Admin page</h1>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th style="width: 15%">Image</th>
+            <th>Product Name</th>
+            <th style="width: 20%">Price</th>
+            <th style="width: 20%">Already Sale</th>
+            <th style="width: 20%"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% products.forEach(product => { %>
+          <tr>
+            <td><img src="<%= product.productImage %> " width="80" /></td>
+            <td><%= product.productName %></td>
+            <td><%= product.price %> TL</td>
+            <td>yes</td>
+            <td>
+              <div class="d-flex justify-content-between">
+                <a class="btn btn-primary btn-sm mr-3" href="/edit-product/<%= product._id %> ">Edit</a>
+                <form action="/delete-product/<%= product._id %>" method="post">
+                  <button class="btn btn-danger btn-sm" type="submit">
+                    Delete
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

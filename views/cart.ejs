@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <%- include("partials/navbar") %>
+    <div class="container">
+      <h1>Cart page</h1>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th style="width: 15%">Image</th>
+            <th>Product Name</th>
+            <th style="width: 20%">Price</th>
+            <th style="width: 20%">Quantity</th>
+            <th style="width: 20%"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% products.forEach(product => { %>
+          <tr>
+            <td>
+              <img src="<%= product.productId.productImage %>" width="80" />
+            </td>
+            <td><%= product.productId.productName %></td>
+            <td><%= product.productId.price %> TL</td>
+            <td><%= product.quantity %></td>
+            <td>
+              <div class="d-flex justify-content-between">
+                <form
+                  action="/delete-cartproduct/<%= product.productId._id %>"
+                  method="post"
+                >
+                  <input
+                    type="hidden"
+                    name="productid"
+                    id="productid"
+                    value="<%= product.productId._id %>"
+                  />
+                  <button class="btn btn-danger btn-sm" type="submit">
+                    Delete
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+        <tfoot>
+          <% let total = 0; products.forEach((product) => { total +=
+          product.productId.price * product.quantity; }); %>
+          <td colspan="3"></td>
+          <td>TOTAL:</td>
+          <td><%- total %> TL</td>
+        </tfoot>
+      </table>
+      <form action="/create-order" method="POST">
+        <button class="btn btn-primary ml-2" type="submit">
+          Complete the Shopping
+        </button>
+      </form>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <%- include("partials/navbar") %>
+    <div class="container">
+      <h1>Products Page</h1>
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <% products.forEach(product => { %>
+        <div class="col mb-2">
+          <div class="card">
+            <div class="d-flex justify-content-center mt-1">
+              <img
+                src="<%= product.productImage %>"
+                class="card-img-top"
+                alt="<%= product.productName %>"
+                style="width: 300px"
+              />
+            </div>
+            <div class="card-body">
+              <h5 class="card-title"><%= product.productName %></h5>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+              <h4>
+                <span class="badge bg-secondary"><%= product.price %> TL</span>
+              </h4>
+              <a href="/products/<%= product._id %>">
+                <button class="btn btn-dark">details</button></a
+              >
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </body>
+</html>

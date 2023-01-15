@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Document</title>
+</head>
+
+<body>
+  <%- include("partials/navbar") %>
+    <div class="container">
+      <h1>Product detail</h1>
+      <div class="card mb-3 mt-3" style="max-width: 1000px; border: none">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="<%= product.productImage %>"" class=" img-fluid rounded-start" alt="<%= product.name %>" />
+          </div>
+          <div class="col-md-8">
+            <h2 class="card-title">
+              <%= product.productName %>
+            </h2>
+            <div class="card-body">
+              <h5 class="card-text">
+                <%- product.description %>
+              </h5>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+              <h2>
+                <span class="badge bg-secondary">
+                  <%= product.price %> TL
+                </span>
+              </h2>
+              <% if (user) { %>
+                <%if (inFollowers) { %>
+                  <form action="/delete-fallow-product/<%= product._id %> " method="post">
+                    <input type="hidden" name="productid" id="productid" value="<%= product._id %>" />
+                    <button type="submit" class="btn btn-danger">Unfollow</button>
+                  </form>
+                  <% }else{ %>
+                    <form action="/fallow-product" method="post">
+                      <input type="hidden" name="productId" id="productId" value="<%= product._id %>" />
+                      <button type="submit" class="btn btn-success">Fallow</button>
+                    </form>
+
+                    <% } %>
+                      <% } %>
+                        <form action="/cart" method="post">
+                          <input type="hidden" name="productId" id="productId" value="<%= product._id %>" />
+                          <button type="submit" class="btn btn-dark">Add to Cart</button>
+                        </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% if (user) { %>
+
+        <div class="d-flex justify-content-center">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Add a Comment
+          </button>
+        </div>
+
+        <section class="gradient-custom">
+          <div class=" my-1 py-5">
+            <div class="row d-flex justify-content-center">
+              <div class="col-md-12 col-lg-10 col-xl-8">
+                <div class="card">
+                  <div class="card-body p-4">
+                    <h4 class="text-center mb-4 pb-2">Comments</h4>
+
+                    <% } %>
+                      <% let i=0 %>
+
+                        <% comments.forEach(comment=> { %>
+                          <% if (isComment ) { %>
+
+                            <div class="row my-3 ">
+                              <div class="col">
+                                <div class="d-flex flex-start">
+                                  <img class="rounded-circle shadow-1-strong me-3" src="<%= comment.user.userImage %> "
+                                    alt="avatar" width="65" height="65" />
+                                  <div class="flex-grow-1 flex-shrink-1 col-md-4">
+                                    <div>
+                                      <div class="d-flex justify-content-between align-items-center">
+                                        <p class="mb-1">
+                                          <%= comment.user.userName %>
+                                            <span class="small text-muted">- <%= comment.date %> </span>
+                                        </p>
+
+                                        <% if (user) { %>
+
+                                          <button type="button" class="text-primary" data-bs-toggle="modal"
+                                            data-bs-target="#<%= comment.user.userName+(i+=1) %>" style="border:none ;">
+                                            <div> <i class="fas fa-reply fa-xs"></i>
+                                              <span class="small"> Reply</span>
+                                            </div>
+                                          </button>
+
+                                          <% } %>
+                                      </div>
+
+                                      <p class="fs-4 mb-3">
+                                        <%= comment.content %>
+                                      </p>
+
+
+                                      <div class="modal fade" name="a" id="<%= comment.user.userName+(i) %>"
+                                        tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                            <form action="/reply" method="post">
+                                              <div class="modal-header">
+                                                <h1 class="modal-title fs-5">Reply</h1>
+                                                <input type="hidden" name="commentId" id="commentId"
+                                                  value="<%= comment._id %>" />
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                  aria-label="Close"></button>
+                                              </div>
+                                              <div class="modal-body">
+                                                <div class="mb-3">
+                                                  <label for="message-text" class="col-form-label">Reply:</label>
+                                                  <textarea class="form-control" id="message-text"
+                                                    name="reply">@<%= comment.user.userName %>  </textarea>
+                                                </div>
+                                              </div>
+                                              <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Send reply</button>
+                                              </div>
+                                            </form>
+                                          </div>
+                                        </div>
+                                      </div>
+
+
+                                    </div>
+                                    <% comment.replys.forEach(reply=> { %>
+
+                                      <div class="d-flex flex-start mt-4">
+                                        <div class="me-3">
+                                          <img class="rounded-circle shadow-1-strong" src="<%= reply.userImage %> "
+                                            alt="avatar" width="65" height="65" />
+                                        </div>
+                                        <div class="flex-grow-1 flex-shrink-1">
+                                          <div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                              <p class="mb-1">
+                                                <%= reply.userName %>
+                                                  <span class="small">- 3 hours ago</span>
+                                              </p>
+                                            </div>
+                                            <div class="col-md-6">
+                                              <p class="fs-6 mb-0">
+                                                <%= reply.content %>
+                                              </p>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <% }) %>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <% } %>
+                              <% }) %>
+                                <% if (!isComment) { %>
+                                  <h2>
+                                    no comments yet
+                                  </h2>
+                                  <% } %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                  New Comment
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form action="/comment" method="post">
+                  <div class="mb-3">
+                    <label for="message-text" class="col-form-label">Comment:</label>
+                    <input type="hidden" name="productId" id="productId" value="<%= product._id %>" />
+                    <textarea class="form-control" id="comment" name="comment"></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary">
+                    Send message
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</body>
+
+</html>

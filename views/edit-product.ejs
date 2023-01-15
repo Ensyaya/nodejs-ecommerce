@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <%- include("partials/navbar") %>
+    <div class="container">
+      <h1>Edit Product Page</h1>
+      <br />
+      <form
+        action="/edit-product/<%= product._id %>"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="productName" class="form-label">Product Name</label>
+            <input
+              type="text"
+              class="form-control"
+              name="productName"
+              id="productName"
+              value="<%= product.productName %>"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input
+              type="text"
+              class="form-control"
+              name="price"
+              id="price"
+              value="<%= product.price %>"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="productImage" class="form-label">Image</label>
+            <input type="file" class="form-control" name="productImage" id="productImage" />
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              type="text"
+              class="form-control"
+              name="description"
+              id="editor"
+            >
+<%= product.description %></textarea
+            >
+          </div>
+          <button type="submit" class="btn btn-dark">Save Product</button>
+        </div>
+      </form>
+    </div>
+    <script src="https://cdn.ckeditor.com/4.11.3/standard/ckeditor.js"></script>
+    <script src="/js/script.js"></script>
+  </body>
+</html>
